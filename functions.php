@@ -74,3 +74,40 @@ function validateLoginForm($pdo){
     return ['errors'=>$errors, 'prenom'=>$rep['prenom']];
 
 }
+
+function validationAddCompetence(){
+
+/*    echo '<pre>';
+    var_dump($_POST);
+    echo '</pre>';*/
+
+
+    $errors=[];
+
+    if (empty($_POST['titre'])) {
+        $errors[] = 'Veuillez saisir le titre de la compétence';
+    }
+    if (empty($_POST['note'])) {
+        $errors[] = 'Veuillez saisir la note de la compétence';
+    }
+
+    return $errors;
+}
+
+function addBddCompetence($pdo){
+
+    $req = $pdo->prepare(
+        'INSERT INTO competence(titre, note)
+VALUES(:titre, :note)');
+    $req->execute([
+        'titre' => $_POST['titre'],
+        'note' => $_POST['note']
+    ]);
+
+}
+
+function getAllCompetences(){
+
+
+
+}

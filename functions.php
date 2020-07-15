@@ -1,5 +1,6 @@
 <?php
 require_once 'bdd-connect.php';
+session_start();
 
 function validateRegister($pdo){
 
@@ -49,6 +50,17 @@ VALUES(:nom, :prenom, :mot_de_passe , :email)');
     ]);
 
 
+}
+
+
+function userOk(){
+    $user=false;
+    if($_SESSION['prenom']){
+
+        $user=true;
+
+    }
+return $user;
 }
 
 
@@ -157,9 +169,26 @@ function deleteCompetence($pdo,$id){
 
 }
 
+function deleteExperience($pdo,$id){
+
+    $res = $pdo->prepare('DELETE FROM experience WHERE id = :id');
+    $res->execute(['id' => $id]);
+
+
+}
+
 function getOneCompetence($pdo,$id){
 
     $res = $pdo->prepare('SELECT * FROM competence WHERE id = :id');
+    $res->execute(['id'=> $id]);
+    return $fetchRes = $res->fetch();
+
+
+}
+
+function getOneExp($pdo,$id){
+
+    $res = $pdo->prepare('SELECT * FROM experience WHERE id = :id');
     $res->execute(['id'=> $id]);
     return $fetchRes = $res->fetch();
 
@@ -178,6 +207,20 @@ die();*/
     $req->execute([
         'titre' => $_POST['titre'],
         'note' => $_POST['note'],
+        'id' => $id
+    ]);
+
+
+}
+
+function updateExperience($pdo,$id){
+
+    $req = $pdo->prepare('UPDATE experience SET titre = :titre, description = :description, date_debut = :date_debut, date_fin = :date_fin, id = :id WHERE id = :id');
+    $req->execute([
+        'titre' => $_POST['titre'],
+        'description' => $_POST['description'],
+        'date_debut' => $_POST['date_debut'],
+        'date_fin' => $_POST['date_fin'],
         'id' => $id
     ]);
 

@@ -9,6 +9,9 @@ if ($bddOk===1) {
 /*if (!$_SESSION['utilisateur']) {
     header('Location: register.php');
 }*/
+
+ini_set("display_errors", 0);
+
 $connectedUser=false;
 if ($_SESSION['prenom']){
     $connectedUser=true;
@@ -16,6 +19,7 @@ if ($_SESSION['prenom']){
 }else{
     $connectedUser=false;
 }
+ini_set("display_errors", 1);
 
 /*var_dump($connectedUser);
 die();*/
@@ -27,7 +31,11 @@ $editlink = "";
 
 $getCompetences = $pdo->query('SELECT * FROM competence');
 $getExperiences = $pdo->query('SELECT * FROM experience');
+
 ?>
+
+
+
 
 <?php
 /*echo '<pre>';
@@ -99,6 +107,7 @@ if ($connectedUser==false){
 
 
             </tr>
+
             <?php
         }
 //        $reponse->closeCursor(); ?>
@@ -132,19 +141,19 @@ if ($connectedUser==false){
         </tr>
         </thead>
         <tbody>
-        <tr>
+<!--        <tr>
             <td>Mark</td>
             <td>Otto</td>
             <td>Otto</td>
             <td>Otto</td>
             <?php
-            if ($connectedUser==1) {
+/*            if ($connectedUser==1) {
                 echo '<td><a href="editCompetence.php">Editer</a><br>
                         <a href="deleteCompetence.php" style="color: red">Supprimer</a></td>';
-            }?>
+            }*/?>
 
         </tr>
-<?php
+--><?php
         while ($dataExp = $getExperiences->fetch()){
         ?>
         <tr>

@@ -94,6 +94,34 @@ function validationAddCompetence(){
     return $errors;
 }
 
+function validationAddExperience(){
+
+/*echo '<pre>';
+var_dump($_POST);
+echo '</pre>';
+die();*/
+
+    $errors=[];
+
+    if (empty($_POST['titre'])) {
+        $errors[] = 'Veuillez saisir le titre de l\'expérience';
+    }
+    if (empty($_POST['description'])) {
+        $errors[] = 'Veuillez saisir la description de l\'expérience';
+    }
+    if (empty($_POST['date_debut'])) {
+        $errors[] = 'Veuillez saisir la date de début de l\'expérience';
+    }
+    if (empty($_POST['date_fin'])) {
+        $errors[] = 'Veuillez saisir la date de fin de l\'expérience';
+    }
+
+
+    return $errors;
+
+
+}
+
 function addBddCompetence($pdo){
 
     $req = $pdo->prepare(
@@ -106,8 +134,52 @@ VALUES(:titre, :note)');
 
 }
 
-function getAllCompetences(){
+function addBddExperience($pdo){
 
+    $req = $pdo->prepare(
+        'INSERT INTO experience(titre, description, date_debut, date_fin)
+VALUES(:titre, :description, :date_debut, :date_fin)');
+    $req->execute([
+        'titre' => $_POST['titre'],
+        'description' => $_POST['description'],
+        'date_debut' => $_POST['date_debut'],
+        'date_fin' => $_POST['date_fin']
+    ]);
+
+
+}
+
+function deleteCompetence($pdo,$id){
+
+    $res = $pdo->prepare('DELETE FROM competence WHERE id = :id');
+    $res->execute(['id' => $id]);
+
+
+}
+
+function getOneCompetence($pdo,$id){
+
+    $res = $pdo->prepare('SELECT * FROM competence WHERE id = :id');
+    $res->execute(['id'=> $id]);
+    return $fetchRes = $res->fetch();
+
+
+}
+
+function updateCompetence($pdo,$id){
+
+/*    echo '<pre>';
+    var_dump((int)$_POST['note']);
+    echo '</pre>';
+die();*/
+
+
+    $req = $pdo->prepare('UPDATE competence SET titre = :titre, note = :note WHERE id = :id');
+    $req->execute([
+        'titre' => $_POST['titre'],
+        'note' => $_POST['note'],
+        'id' => $id
+    ]);
 
 
 }

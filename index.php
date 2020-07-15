@@ -9,10 +9,12 @@ if ($bddOk===1) {
 /*if (!$_SESSION['utilisateur']) {
     header('Location: register.php');
 }*/
-$connectedUser=0;
+$connectedUser=false;
 if ($_SESSION['prenom']){
-    $connectedUser=1;
+    $connectedUser=true;
     echo $_SESSION['prenom'],'<hr>';
+}else{
+    $connectedUser=false;
 }
 
 /*var_dump($connectedUser);
@@ -24,12 +26,20 @@ $editlink = "";
 
 
 $getCompetences = $pdo->query('SELECT * FROM competence');
-
+$getExperiences = $pdo->query('SELECT * FROM experience');
 ?>
 
+<?php
+/*echo '<pre>';
+var_dump($connectedUser);
+echo '</pre>';
+die();*/
 
-<a href="login.php">Se connecter</a>
-<a href="logout.php">Se deconnecter</a>
+if ($connectedUser==false){
+    echo '<a href="login.php">Se connecter</a>';
+    }elseif ($connectedUser==true){
+    echo '<a href="logout.php" style="color: red">Se deconnecter</a>';
+} ?>
 <hr><br>
 
 <div >
@@ -73,19 +83,20 @@ $getCompetences = $pdo->query('SELECT * FROM competence');
         while ($data = $getCompetences->fetch()){
             ?>
             <tr>
-                <td><?php echo($data['titre'])?></td>
+                <td ><?php echo($data['titre'])?></td>
                 <td><?php echo($data['note'])?></td>
-                <?php if ($connectedUser==1) {
+                <td><?php if ($connectedUser==1) {
                     $deletelink = "deleteCompetence.php?id=" . $data['id'];
-                    $detaillink = "deleteCompetence.php?id=" . $data['id'];
-                    $editlink = "deleteCompetence.php?id=" . $data['id'];
+                    $detaillink = "detailCompetence.php?id=" . $data['id'];
+                    $editlink = "editCompetence.php?id=" . $data['id'];
+
+                   echo'<a href='; echo $editlink; echo'>Editer</a><br>';
+                   echo'<a href='; echo $deletelink.' '; echo'style="color: red">Supprimer</a><br>';
+
 
                 }
-                    ?>
-                <td>
-                    <a href=<?php echo $detaillink?>>Détail</a><br>
-                    <a href=<?php echo $editlink?>>Editer</a><br>
-                    <a href=<?php echo $deletelink?>. style="color: red">Supprimer</a></td>';
+                    ?></td>
+
 
             </tr>
             <?php
@@ -133,6 +144,32 @@ $getCompetences = $pdo->query('SELECT * FROM competence');
             }?>
 
         </tr>
+<?php
+        while ($dataExp = $getExperiences->fetch()){
+        ?>
+        <tr>
+            <td ><?php echo($dataExp['titre'])?></td>
+            <td><?php echo($dataExp['description'])?></td>
+            <td><?php echo($dataExp['date_debut'])?></td>
+            <td><?php echo($dataExp['date_fin'])?></td>
+            <td><?php if ($connectedUser==1) {
+                    $deletelinkExp = "deleteExperience.php?id=" . $dataExp['id'];
+                    $detaillinkExp = "detailExperience.php?id=" . $dataExp['id'];
+                    $editlinkExp = "editExperience.php?id=" . $dataExp['id'];
+
+                    echo'<a href='; echo $editlinkExp; echo'>Editer</a><br>';
+                    echo'<a href='; echo $deletelinkExp.' '; echo'style="color: red">Supprimer</a><br>';
+
+
+                }
+                ?></td>
+
+
+        </tr>
+        <?php
+        }
+//        $reponse->closeCursor(); ?>
+
         </tbody>
     </table>
 </div>

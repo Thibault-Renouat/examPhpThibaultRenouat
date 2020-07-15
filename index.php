@@ -92,7 +92,7 @@ if ($connectedUser==false){
             ?>
             <tr>
                 <td ><?php echo($data['titre'])?></td>
-                <td><?php echo($data['note'])?></td>
+                <td><?php echo($data['note']).' étoiles &emsp; :-)  '?></td>
                 <td><?php if ($connectedUser==1) {
                     $deletelink = "deleteCompetence.php?id=" . $data['id'];
                     $detaillink = "detailCompetence.php?id=" . $data['id'];
@@ -129,9 +129,9 @@ if ($connectedUser==false){
     <table class="table table-dark">
         <thead>
         <tr>
-            <th scope="col">Date de début</th>
             <th scope="col">Titre</th>
             <th scope="col">Description</th>
+            <th scope="col">Date de début</th>
             <th scope="col">Date de fin</th>
             <?php
             if ($connectedUser==1) {
